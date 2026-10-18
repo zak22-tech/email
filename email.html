@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بريدي التعليمي</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Tahoma,sans-serif;
+}
+
+body{
+    background:#f1f3f4;
+}
+
+.header{
+    background:#4285f4;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    display:flex;
+    min-height:90vh;
+}
+
+.sidebar{
+    width:250px;
+    background:white;
+    padding:20px;
+    border-left:1px solid #ddd;
+}
+
+.sidebar button{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#e8f0fe;
+    font-size:16px;
+}
+
+.sidebar button:hover{
+    background:#cfe0ff;
+}
+
+.content{
+    flex:1;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+textarea{
+    height:180px;
+}
+
+.send-btn{
+    background:#4285f4;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.message{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.success{
+    margin-top:15px;
+    color:green;
+    font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<div class="header">
+📧 بريدي التعليمي
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+    <button onclick="showInbox()">📥 صندوق الوارد</button>
+    <button onclick="showCompose()">✍️ إنشاء رسالة</button>
+    <button onclick="showSent()">📤 العناصر المرسلة</button>
+</div>
+
+<div class="content">
+
+<div id="main" class="card">
+
+<h2>مرحباً بك</h2>
+<p>تدرب على إرسال البريد الإلكتروني بطريقة آمنة.</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let sentMessages = [];
+
+function showInbox(){
+
+document.getElementById("main").innerHTML=`
+
+<h2>📥 صندوق الوارد</h2>
+
+<div class="message">
+<b>معلم الحاسوب</b><br>
+الموضوع: الواجب الأول
+</div>
+
+<div class="message">
+<b>إدارة المدرسة</b><br>
+الموضوع: مسابقة الابتكار
+</div>
+
+<div class="message">
+<b>أمين المختبر</b><br>
+الموضوع: حجز المختبر
+</div>
+
+`;
+
+}
+
+function showCompose(){
+
+document.getElementById("main").innerHTML=`
+
+<h2>✍️ إنشاء رسالة جديدة</h2>
+
+<label>إلى:</label>
+<input class="input" id="to">
+
+<label>الموضوع:</label>
+<input class="input" id="subject">
+
+<label>نص الرسالة:</label>
+<textarea class="input" id="body"></textarea>
+
+<button class="send-btn" onclick="sendMail()">
+إرسال
+</button>
+
+<div id="result"></div>
+
+`;
+
+}
+
+function sendMail(){
+
+let to=document.getElementById("to").value;
+let subject=document.getElementById("subject").value;
+let body=document.getElementById("body").value;
+
+if(to=="" || subject=="" || body==""){
+    document.getElementById("result").innerHTML=
+    "<p style='color:red'>⚠️ يجب تعبئة جميع الحقول.</p>";
+    return;
+}
+
+sentMessages.push({
+    to:to,
+    subject:subject,
+    body:body
+});
+
+document.getElementById("result").innerHTML=
+"<p class='success'>✅ تم إرسال البريد الإلكتروني بنجاح.</p>";
+
+}
+
+function showSent(){
+
+let html="<h2>📤 العناصر المرسلة</h2>";
+
+if(sentMessages.length==0){
+    html+="<p>لا توجد رسائل مرسلة.</p>";
+}
+else{
+
+    sentMessages.forEach(msg=>{
+
+        html+=`
+        <div class="message">
+        <b>إلى:</b> ${msg.to}<br>
+        <b>الموضوع:</b> ${msg.subject}
+        </div>
+        `;
+
+    });
+
+}
+
+document.getElementById("main").innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
